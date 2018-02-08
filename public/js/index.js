@@ -7,10 +7,10 @@ socket.on("connect", function() {
   //   to:"ramdahadiresal@ymail.com",
   //   text:"Hey. This is ResalR"
   // });
-  socket.emit('createMessage', {
-    from: "resalramdahadi92@gmail.com",
-    text:'Hey there!!'
-  });
+  // socket.emit('createMessage', {
+  //   from: "resalramdahadi92@gmail.com",
+  //   text:'Hey there!!'
+  // });
 });
 
 socket.on("disconnect", function() {

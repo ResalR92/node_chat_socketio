@@ -36,11 +36,11 @@ io.on('connection', (socket => {
   //   createdAt:123
   // });
 
-  socket.emit('newMessage', {
-    from: 'ResalR92',
-    text: 'See you then',
-    createdAt: 123123
-  });
+  // socket.emit('newMessage', {
+  //   from: 'ResalR92',
+  //   text: 'See you then',
+  //   createdAt: 123123
+  // });
 
   // socket.on('createEmail', (newEmail) => {
   //   console.log('Create Email', newEmail);
@@ -51,6 +51,15 @@ io.on('connection', (socket => {
   // ================================
   socket.on('createMessage', (message) => {
     console.log('createMessage', message);
+
+    // =====================================================
+    // Emitting event to every single connection - io.emit()
+    // =====================================================
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    });
   });
 
   socket.on('disconnect', () => {
