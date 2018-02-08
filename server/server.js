@@ -3,6 +3,8 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
+const {generateMessage} = require('./utils/message'); // message generator
+
 const publicPath = path.join(__dirname, '../public');
 // console.log(__dirname+'/../public');
 // console.log(publicPath);
@@ -47,17 +49,9 @@ io.on('connection', (socket => {
   // });
 
   // socket.emit from Admin text Welcome to the chat app
-  socket.emit('newMessage', {
-    from: 'Admin',
-    text: 'Welcome to the chat app',
-    createdAt: new Date().getTime()
-  });
+  socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
   // socket.broadcast.emit form admin text New User joined
-  socket.broadcast.emit('newMessage', {
-    from: 'Admin',
-    text: 'New User joined',
-    createdAt: new Date().getTime()
-  });
+  socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
   // ================================
   // Listening to event - socket.on()
@@ -68,11 +62,7 @@ io.on('connection', (socket => {
     // =====================================================
     // Emitting event to every single connection - io.emit()
     // =====================================================
-    io.emit('newMessage', {
-      from: message.from,
-      text: message.text,
-      createdAt: new Date().getTime()
-    });
+    io.emit('newMessage', generateMessage(message.from, message.text));
 
     // ===========================
     // Broadcasting event - sending event to everyone but not the sender
