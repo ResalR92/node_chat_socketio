@@ -16,10 +16,42 @@ var io = socketIO(server);
 
 app.use(express.static(publicPath));
 
-// Persistent technology - keep connection OPEN for client and server
+// ==========
+// Socket.IO
+// ==========
+// ------------------------------------------------------------------------------------------
+// Persistent technology - keep connection OPEN for client and server - which http can't do it
 // when connection down - client will try to reconnect to server - via XHR
+// ------------------------------------------------------------------------------------------
 io.on('connection', (socket => {
   console.log('New user connected');
+
+  // ==============================
+  // Emitting event - socket.emit()
+  // ==============================
+  // socket.emit('newEmail', {
+  //   // multiple - event data
+  //   from:'resalramdahadi92@gmail.com',
+  //   text:"Hey. What is going on?",
+  //   createdAt:123
+  // });
+
+  socket.emit('newMessage', {
+    from: 'ResalR92',
+    text: 'See you then',
+    createdAt: 123123
+  });
+
+  // socket.on('createEmail', (newEmail) => {
+  //   console.log('Create Email', newEmail);
+  // });
+
+  // ================================
+  // Listening to event - socket.on()
+  // ================================
+  socket.on('createMessage', (message) => {
+    console.log('createMessage', message);
+  });
 
   socket.on('disconnect', () => {
     console.log('User was disconnected');
