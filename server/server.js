@@ -56,14 +56,14 @@ io.on('connection', (socket => {
   // ================================
   // Listening to event - socket.on()
   // ================================
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, callback) => { // event acknowledgement - server - callback
     console.log('createMessage', message);
 
     // =====================================================
     // Emitting event to every single connection - io.emit()
     // =====================================================
     io.emit('newMessage', generateMessage(message.from, message.text));
-
+    callback('This is from the server.');
     // ===========================
     // Broadcasting event - sending event to everyone but not the sender
     // ===========================
