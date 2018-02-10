@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
-const {generateMessage} = require('./utils/message'); // message generator
+const { generateMessage, generateLocationMessage } = require("./utils/message"); // message generator
 
 const publicPath = path.join(__dirname, '../public');
 // console.log(__dirname+'/../public');
@@ -72,6 +72,13 @@ io.on('connection', (socket => {
     //   text: message.text,
     //   createdAt: new Date().getTime()
     // });
+  });
+
+  // Geolocation
+  socket.on('createLocationMessage', (coords) => {
+    // io.emit('newMessage', generateMessage('Admin', `${coords.latitude}, ${coords.longitude}`));
+    // link to google maps
+    io.emit('newLocationMessage', generateLocationMessage('Admin', `${coords.latitude}, ${coords.longitude}`));
   });
 
   socket.on('disconnect', () => {
