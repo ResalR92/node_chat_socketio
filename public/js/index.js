@@ -23,10 +23,12 @@ socket.on("disconnect", function() {
 // });
 
 socket.on('newMessage', function(message) {
-  console.log('newMessage', message);
+  // console.log('newMessage', message);
+  // momentjs
+  var formattedTime = moment(message.createdAt).format('h:mm a');
 
   var li = jQuery('<li></li>');
-  li.text(`${message.from}: ${message.text}`);
+  li.text(`${message.from} ${formattedTime} : ${message.text}`);
 
   jQuery('#messages').append(li);
 });
@@ -40,10 +42,11 @@ socket.on('newMessage', function(message) {
 
 // Output link - geolocation
 socket.on('newLocationMessage', function(message) {
+  var formattedTime = moment(message.createdAt).format("h:mm a");
   var li = jQuery('<li></li>');
   var a = jQuery('<a target="_blank">My current location</a>');
 
-  li.text(`${message.from}: `);
+  li.text(`${message.from} ${formattedTime}: `);
   a.attr('href', message.url);
   li.append(a);
 
