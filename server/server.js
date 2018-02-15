@@ -91,10 +91,14 @@ io.on('connection', (socket => {
   socket.on('createMessage', (message, callback) => { // event acknowledgement - server - callback
     console.log('createMessage', message);
 
-    // =====================================================
-    // Emitting event to every single connection - io.emit()
-    // =====================================================
-    io.emit('newMessage', generateMessage(message.from, message.text));
+    var user = users.getUser(socket.id);
+
+    if(user && isRealString(message.text)) {
+      // =====================================================
+      // Emitting event to every single connection - io.emit()
+      // =====================================================
+      io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+    }
     callback('This is from the server.');
     // ===========================
     // Broadcasting event - sending event to everyone but not the sender
@@ -109,8 +113,14 @@ io.on('connection', (socket => {
   // Geolocation
   socket.on('createLocationMessage', (coords) => {
     // io.emit('newMessage', generateMessage('Admin', `${coords.latitude}, ${coords.longitude}`));
-    // link to google maps
-    io.emit('newLocationMessage', generateLocationMessage('Admin', `${coords.latitude}, ${coords.longitude}`));
+
+    var user = users.getUser(socket.id);
+
+    if(user) {
+      // link to google maps
+      io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, `${coords.latitude}, ${coords.longitude}`));
+    }
+
   });
 
   socket.on('disconnect', () => {
